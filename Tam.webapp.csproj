@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Hadramet Sylla</Authors>
+    <Description>3 ASPC Study project</Description>
+    <Copyright>2021 Supinfo Hadramet Sylla</Copyright>
+    <NeutralLanguage />
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+</Project>
