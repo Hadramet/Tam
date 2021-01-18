@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Tam.webapp.Models.DataServices;
 
 namespace Tam.webapp
 {
@@ -19,6 +22,20 @@ namespace Tam.webapp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Register Tam Database context
+            services.AddDbContext<TamDataContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Tam")));
+
+            // Register Identity dbContext
+            services.AddDbContext<IdentityDbContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("Tam"),
+                optionsBuilder => optionsBuilder.MigrationsAssembly("Tam.webapp")));
+
+            // use Identity framework
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
