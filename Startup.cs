@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tam.webapp.Models.DataServices;
+using Tam.webapp.Db;
+using Tam.webapp.Repositories.PlayLists;
+using Tam.webapp.Services.PlayLists;
 
 namespace Tam.webapp
 {
@@ -23,8 +25,11 @@ namespace Tam.webapp
         {
             services.AddControllersWithViews();
 
+            services.AddTransient<IPlayListsRepository, PlayListsRepository>();
+            services.AddTransient<IPlayListsService, PlayListService>();
+
             // Register Tam Database context
-            services.AddDbContext<TamDataContext>(options =>
+            services.AddDbContext<TamDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Tam")));
 
             // Register Identity dbContext
