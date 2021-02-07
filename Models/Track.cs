@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace Tam.webapp.Models
 {
@@ -11,23 +13,21 @@ namespace Tam.webapp.Models
 
         public string Title { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
+
+        public string Artist { get; set; }
+
+        public TimeSpan Duration { get; set; }
+
+        public DateTime AddedDate { get; set; }
+
+        [NotMappedAttribute]
+        public IFormFile Local { get; set; }
+
+        public string LocalSource { get; set; }
+
+        public string Source { get; set; }
 
         public virtual ICollection<TrackPlayList> TrackPlayLists { get; set; }
-    }
-
-    public class TrackPlayList
-    {
-        [Key]
-        public long Id;
-
-        [ForeignKey(nameof(Track))]
-        public long TrackId { get; set; }
-        public Track Track { get; set; }
-
-        [ForeignKey(nameof(PlayList))]
-        public long PlayListId { get; set; }
-        public PlayList PlayList { get; set; }
-
     }
 }

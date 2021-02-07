@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -5,9 +6,18 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Tam.webapp.Controllers;
 using Tam.webapp.Db;
+using Tam.webapp.Repositories;
 using Tam.webapp.Repositories.PlayLists;
-using Tam.webapp.Services.PlayLists;
+using Tam.webapp.Repositories.Track;
+using Tam.webapp.Repositories.TrackPlayList;
+using Tam.webapp.Repositories.User;
+using Tam.webapp.Repositories.UserPlayList;
+using Tam.webapp.Services;
+using Tam.webapp.Services.PlayList;
+using Tam.webapp.Services.Track;
 
 namespace Tam.webapp
 {
@@ -25,29 +35,33 @@ namespace Tam.webapp
         {
             services.AddControllersWithViews();
 
-            services.AddTransient<IPlayListsRepository, PlayListsRepository>();
-            services.AddTransient<IPlayListsService, PlayListService>();
+            services.AddScoped<IPlayListsRepository, PlayListsRepository>();
+            services.AddScoped<ITrackPlayListRepository, TrackPlayListRepository>();
+            services.AddScoped<ITrackRepository, TrackRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserPlayListRepository, UserPlayListsRepository>();
+            
+            services.AddTransient<IPlayListService, PlayListService>();
+            services.AddTransient<ITrackService, TrackService>();
 
             // Register Tam Database context
             services.AddDbContext<TamDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Tam")));
-
-            // Register Identity dbContext
-            services.AddDbContext<IdentityDbContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("Tam"),
-                optionsBuilder => optionsBuilder.MigrationsAssembly("Tam.webapp")));
-
-            // use Identity framework
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders();
+            
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
+            services.AddControllersWithViews().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            //if (env.IsDevelopment())
-            if(Configuration["EnableDeveloperExceptions"] == "True")
+
+            app.UseAuthentication();
+            if (Configuration["EnableDeveloperExceptions"] == "True")
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -57,6 +71,8 @@ namespace Tam.webapp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

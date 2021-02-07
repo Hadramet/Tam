@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Tam.webapp.Models;
 
 namespace Tam.webapp.Models
 {
@@ -12,7 +13,12 @@ namespace Tam.webapp.Models
         [Key]
         public long Id { get; set; }
 
-        public string PlayListName { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        public int Quantity { get; set; }
+
+        public virtual ICollection<UserPlayList> UserPlayLists { get; set; }
 
         public virtual ICollection<TrackPlayList> TrackPlayLists { get; set; }
 

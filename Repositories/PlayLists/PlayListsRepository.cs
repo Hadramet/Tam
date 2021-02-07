@@ -1,67 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Tam.webapp.Db;
 using Tam.webapp.Models;
 
 namespace Tam.webapp.Repositories.PlayLists
 {
-
-    public  class PlayListsRepository : IPlayListsRepository
+    public class PlayListsRepository : IPlayListsRepository
     {
-        private readonly TamDbContext _dbContext;
+        private readonly TamDbContext _context;
 
-        public PlayListsRepository(TamDbContext dbContext)
+        public PlayListsRepository(TamDbContext context)
         {
-            this._dbContext = dbContext;
-        }        
-
-        public PlayList Get(long id)
+            _context = context;
+        }
+        public IQueryable<PlayList> GetPlayLists()
         {
-            return _dbContext.PlayLists.FirstOrDefault(x => x.Id == id);
+            return _context.PlayLists;
         }
 
-        public IQueryable<PlayList> GetAll(int? count=null, int? page = null)
+        public void AddPlaylist(PlayList playList)
         {
-            var actualCount = count.GetValueOrDefault(10);
-
-            return _dbContext.PlayLists
-                .Skip(actualCount * page.GetValueOrDefault(0))
-                .Take(actualCount);
+            _context.Add(playList);
+            _context.SaveChanges();
         }
 
-        public void Add(PlayList entity)
+        public async Task AddPlaylistAsync(PlayList playList)
         {
-
-            var playlist = _dbContext.PlayLists
-                .Add(new PlayList
-            {
-                PlayListName = entity.PlayListName,                
-                CreatedDate = DateTime.UtcNow,
-            });
-
-            _dbContext.SaveChanges();
+            _context.Add(playList);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(long id, PlayList playList)
+        public void UpdatePlaylist(PlayList playList)
         {
-            throw new NotImplementedException();
+            _context.Update(playList);
+            _context.SaveChanges();
         }
 
-        public void Remove(long id)
+        public async Task UpdatePlaylistAsync(PlayList playList)
         {
-            throw new NotImplementedException();
+            _context.Update(playList);
+            await _context.SaveChangesAsync();
         }
 
-        public PlayList GetPlayListTracks(long id)
+        public void DeletePlaylist(PlayList playList)
         {
-            return _dbContext.PlayLists
-                .Where(x => x.Id == id)
-                .Include(s => s.TrackPlayLists)
-                .ThenInclude(x=> x.Track)
-                .FirstOrDefault();
+            _context.Remove(playList);
+            _context.SaveChanges();
+        }
+
+        public async Task DeletePlaylistAsync(PlayList playList)
+        {
+            _context.Remove(playList);
+            await _context.SaveChangesAsync();
         }
     }
-
 }

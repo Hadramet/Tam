@@ -1,48 +1,198 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Tam.webapp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Muzik- Responsive Bootstrap 4 Admin Dashboard Template</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/light/images/favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/light/css/bootstrap.min.css">
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="~/light/css/typography.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="~/light/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="~/light/css/responsive.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tam.webapp</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <div class="wrapper">
+        <!-- loader Start -->
+        <div id="loading">
+            <div id="loading-center">
+            </div>
+        </div>
+        <!-- Sidebar  -->
+        <div class="iq-sidebar">
+            <div class="iq-sidebar-logo d-flex justify-content-between">
+                <a href="index.html" class="header-logo">
+                    <img src="images/logo.png" class="img-fluid rounded-normal" alt="">
+                    <div class="logo-title">
+                        <span class="text-primary text-uppercase">TAM</span>
+                    </div>
+                </a>
+                <div class="iq-menu-bt-sidebar">
+                    <div class="iq-menu-bt align-self-center">
+                        <div class="wrapper-menu">
+                            <div class="main-circle"><i class="las la-bars"></i></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <div id="sidebar-scrollbar">
+                <nav class="iq-sidebar-menu">
+                    <ul id="iq-sidebar-toggle" class="iq-menu">
+                        <li class="active active-menu">
+                            <a href="#dashboard" class="iq-waves-effect" data-toggle="collapse" aria-expanded="true"><span class="ripple rippleEffect"></span><i class="las la-home iq-arrow-left"></i><span>Dashboard</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                            <ul id="dashboard" class="iq-submenu collapse show" data-parent="#iq-sidebar-toggle">
+                                <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index"><i class="las la-house-damage"></i>Home</a></li>
+                            @if (@ViewBag.CurrentUser != null)
+                            {
+                                <li><a asp-area="" asp-controller="PlayList" asp-action="Index"><i class="lar la-file-audio"></i>Playlist</a></li>
+                                <li><a href="#"><i class="las la-headphones"></i>Latest Tracks</a></li>
+                            }
+                            </ul>
+                        </li>
+                        
+                        </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- TOP Nav Bar -->
+        <div class="iq-top-navbar">
+            <div class="iq-navbar-custom">
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="list-unstyled iq-menu-top d-flex justify-content-between mb-0 p-0">
+                          
+                        </ul>
+                        <ul class="navbar-nav ml-auto navbar-list">
+                            <li class="line-height pt-3">
+                                @if (@ViewBag.CurrentUser != null)
+                                {
+                                    <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                                        <img src="~/light/images/user/11.png" class="img-fluid rounded-circle" alt="user">
+                                    </a>
+                                    <div class="iq-sub-dropdown iq-user-dropdown">
+                                        <div class="iq-card shadow-none m-0">
+                                            <div class="iq-card-body p-0 ">
+                                                <div class="bg-primary p-3">
+                                                    <h5 class="mb-0 text-white line-height">@ViewBag.CurrentUser</h5>
+                                                    <span class="text-white font-size-12">Available</span>
+                                                </div>
+                                                <a asp-area="" asp-controller="User" asp-action="Details" asp-route-id="@ViewBag.CurrentUserId" class="iq-sub-card iq-bg-primary-hover">
+                                                    <div class="media align-items-center">
+                                                        <div class="rounded iq-card-icon iq-bg-primary">
+                                                            <i class="ri-file-user-line"></i>
+                                                        </div>
+                                                        <div class="media-body ml-3">
+                                                            <h6 class="mb-0 ">My Profile</h6>
+                                                            <p class="mb-0 font-size-12">View personal profile details.</p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a asp-area="" asp-controller="User" asp-action="Edit" asp-route-id="@ViewBag.CurrentUserId" class="iq-sub-card iq-bg-primary-hover">
+                                                    <div class="media align-items-center">
+                                                        <div class="rounded iq-card-icon iq-bg-primary">
+                                                            <i class="ri-profile-line"></i>
+                                                        </div>
+                                                        <div class="media-body ml-3">
+                                                            <h6 class="mb-0 "> Edit </h6>
+                                                            <p class="mb-0 font-size-12">Modify your personal details.</p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="d-inline-block w-100 text-center p-3">
+                                                    <button type="button" class="btn btn-outline-primary rounded-pill mb-1">Primary</button>
+                                                    <a class="bg-primary iq-sign-btn" role="button" asp-area="" asp-controller="User" asp-action="Logout">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline-primary rounded-pill mb-1" role="button" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                                }
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Tam.webapp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- TOP Nav Bar END -->
+        <div id="content-page" class="content-page">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="iq-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    &copy; 2020 - Tam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Footer END -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    @RenderSection("Scripts", required: false)
+    <script src="/light/js/jquery.min.js"></script>
+    <script src="/light/js/popper.min.js"></script>
+    <script src="/light/js/bootstrap.min.js"></script>
+    <!-- Appear JavaScript -->
+    <script src="/light/js/jquery.appear.js"></script>
+    <!-- Countdown JavaScript -->
+    <script src="/light/js/countdown.min.js"></script>
+    <!-- Counterup JavaScript -->
+    <script src="/light/js/waypoints.min.js"></script>
+    <script src="/light/js/jquery.counterup.min.js"></script>
+    <!-- Wow JavaScript -->
+    <script src="/light/js/wow.min.js"></script>
+    <!-- Apexcharts JavaScript -->
+    <script src="/light/js/apexcharts.js"></script>
+    <!-- Slick JavaScript -->
+    <script src="/light/js/slick.min.js"></script>
+    <!-- Select2 JavaScript -->
+    <script src="/light/js/select2.min.js"></script>
+    <!-- Owl Carousel JavaScript -->
+    <script src="/light/js/owl.carousel.min.js"></script>
+    <!-- Magnific Popup JavaScript -->
+    <script src="/light/js/jquery.magnific-popup.min.js"></script>
+    <!-- Smooth Scrollbar JavaScript -->
+    <script src="/light/js/smooth-scrollbar.js"></script>
+    <!-- lottie JavaScript -->
+    <script src="/light/js/lottie.js"></script>
+    <!-- am core JavaScript -->
+    <script src="/light/js/core.js"></script>
+    <!-- am charts JavaScript -->
+    <script src="/light/js/charts.js"></script>
+    <!-- am animated JavaScript -->
+    <script src="/light/js/animated.js"></script>
+    <!-- am kelly JavaScript -->
+    <script src="/light/js/kelly.js"></script>
+    <!-- am maps JavaScript -->
+    <script src="/light/js/maps.js"></script>
+    <!-- am worldLow JavaScript -->
+    <script src="/light/js/worldLow.js"></script>
+    <!-- Raphael-min JavaScript -->
+    <script src="/light/js/raphael-min.js"></script>
+    <!-- Morris JavaScript -->
+    <script src="/light/js/morris.js"></script>
+    <!-- Morris min JavaScript -->
+    <script src="/light/js/morris.min.js"></script>
+    <!-- Flatpicker Js -->
+    <script src="/light/js/flatpickr.js"></script>
+    <!-- Style Customizer -->
+    <script src="/light/js/style-customizer.js"></script>
+    <!-- Chart Custom JavaScript -->
+    <script src="/light/js/chart-custom.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="/light/js/custom.js"></script>
 </body>
+
 </html>
+

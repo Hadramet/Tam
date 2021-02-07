@@ -1,0 +1,105 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<Tam.webapp.Models.Track>
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["Tracks"] = Model;
+}
+
+
+<div class="container-fluid">
+    <h1 itemprop="name">@ViewBag.CurrentPlayListName</h1>
+    <div class="iq-card-header-toolbar d-flex align-items-center">
+        <a asp-controller="Track" asp-action="Create" class="btn btn-primary">Add New Song</a>
+    </div>
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="iq-card iq-card-transparent  iq-song-back">
+                <div class="iq-card-body">
+                    <div class="iq-music-img1">
+                        <div class="equalizer1">
+                            <span class="bar1 bar-1"></span>
+                            <span class="bar1 bar-2"></span>
+                            <span class="bar1 bar-3"></span>
+                            <span class="bar1 bar-4"></span>
+                            <span class="bar1 bar-5"></span>
+                        </div>
+                    </div>
+                    <div class="player1 row">
+                        <div class="details1 col-6 col-sm-6 col-lg-6">
+                            <div class="now-playing1"></div>
+                            <div class="track-art1"></div>
+                            <div>
+                                <div class="track-name1">Pop Smoke</div>
+                                <div class="track-artist1">Cascada</div>
+                            </div>
+                        </div>
+                        <div class="slider_container1 col-sm-5 col-lg-5">
+                            <div class="current-time1">00:00</div>
+                            <input type="range" min="1" max="100" value="0" class="seek_slider1" onchange="seekTo1()">
+                            <div class="total-duration1">00:00</div>
+                        </div>
+                        <div class="buttons1 col-6 col-sm-2 col-lg-3">
+                            <div class="prev-track1" onclick="prevTrack1()"><i class="fa fa-step-backward fa-2x"></i></div>
+                            <div class="playpause-track1" onclick="playpauseTrack1()"><i class="fa fa-play-circle fa-3x"></i></div>
+                            <div class="next-track1" onclick="nextTrack1()"><i class="fa fa-step-forward fa-2x"></i></div>
+                        </div>
+                        <div class="slider_container1 col-sm-4 col-lg-4">
+                            <i class="fa fa-volume-down"></i>
+                            <input type="range" min="1" max="100" value="99" class="volume_slider1" onchange="setVolume1()">
+                            <i class="fa fa-volume-up"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="iq-card iq-card-transparent">
+                <div class="iq-card-body p-0">
+                    <ul class="list-unstyled row mb-0">
+                        @foreach (var item in Model)
+                        {
+                            <li class="col-lg-6 col-md-6">
+                                <div class="iq-card iq-card-transparent">
+                                    <div class="iq-card-body p-0">
+                                        <div class="media align-items-center">
+                                            <div class="iq-thumb-hotsong">
+                                                <div class="iq-music-overlay"></div>
+                                                <a href="#">
+                                                    <img src="~/light/images/dashboard/album-song/01.png" class="img-fluid avatar-60" alt="">
+                                                </a>
+                                                <div class="overlay-music-icon">
+                                                    <a onclick="playTrack(@item.LocalSource, @item.Title, @item.Artist)">
+                                                        <i class="las la-play-circle font-size-24" onclick="playTrackId(@item.Id)"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="media-body ml-3">
+                                                <h6 class="mb-0"> @item.Title</h6>
+                                                <small> @item.Artist</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var check0 = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model,  Formatting.None,
+                        new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        }));
+    </script>
+
+    <!-- Music js -->
+    <script src="/light/js/music-player-dashboard.js"></script>
+}

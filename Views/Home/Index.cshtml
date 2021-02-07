@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+﻿@page
+<div class="wrapper">
+    <div class="iq-comingsoon pt-5">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+            @if (@ViewBag.CurrentUser != null)
+            {
+                
+            }
+            else
+            {
+                <div class="col-sm-8 text-center">
+                    <div class="iq-comingsoon-info">
+                        <a href="#">
+                            <img src="/light/images/logo-full2.png" class="img-fluid w-25" alt="">
+                        </a>
+                        <h2 class="mt-4 mb-1">Build your playlist as you want</h2>
+                        <p>We are working very hard to give you the best experience possible!</p>
+                        <a class="btn btn-primary btn-lg" role="button" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                    </div>
+                </div>
+            }
+            </div>
+        </div>
+    </div>
 </div>

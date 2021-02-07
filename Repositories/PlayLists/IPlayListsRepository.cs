@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Tam.webapp.Models;
 
 namespace Tam.webapp.Repositories.PlayLists
 {
     public interface IPlayListsRepository
     {
+        IQueryable<PlayList> GetPlayLists();
 
-        void Add(PlayList playlist);
+        void AddPlaylist(PlayList playList);
+        Task AddPlaylistAsync(PlayList playList);
 
-        PlayList Get(long id);
+        void UpdatePlaylist(PlayList playList);
+        Task UpdatePlaylistAsync(PlayList playList);
 
-        PlayList GetPlayListTracks(long id);
-
-        IQueryable<PlayList> GetAll(int? count = null, int? page = null);
-        void Update(long id, PlayList playList);
-        void Remove(long id);
-    
+        void DeletePlaylist(PlayList playList);
+        Task DeletePlaylistAsync(PlayList playList);
+        
     }
 }
